@@ -4,6 +4,18 @@ const {apiDogs, dbDogs, getAllDogs, getByName, getById} = require('../controller
 
 const router = Router();
 
+router.post('/', async (req, res) => {
+    const {name, img, breed_group, weight, height, life_span, temperament, origin} = req.body;
+    try {
+        const newDog = await Dog.create({name, img, breed_group, weight, height, life_span, origin})
+        await newDog.addTemperament(temperament)
+        return res.status(201).json({message: 'Dog created!'})
+    }
+    catch(err) {
+        return res.status(404).send('Something went wrong')
+    }
+})
+
 router.get('/', async (req, res) => {
     const { name } = req.query;
     try{

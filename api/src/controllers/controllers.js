@@ -19,6 +19,7 @@ const apiDogs = async () => {
                     img: dog.image.url,
                     height: dog.height.metric,
                     weight: dog.weight.metric,
+                    temperament: dog.temperament,
                     life_span: dog.life_span,
                     origin: dog.origin || null
                 }
@@ -47,7 +48,6 @@ const getByName = async (name) => {
         })
         if(!dbDog){
             const apiDog = await axios.get(`https://api.thedogapi.com/v1/breeds/search?q=${name}`)
-            console.log(apiDog)
             return {
                 id: apiDog.data[0].id,
                 name: apiDog.data[0].name,
@@ -86,6 +86,8 @@ const getById = async (id) => {
         throw new Error('Could not find that dog!')
     }
 };
+
+
 
 
 
