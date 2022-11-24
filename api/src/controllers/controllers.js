@@ -9,7 +9,6 @@ const apiDogs = async () => {
     await axios.get(`https://api.thedogapi.com/v1/breeds?api_key=${API_KEY}`)
     .then(async response => {
         apiArray = response.data;
-        console.log(response)
         
             apiDogs = apiArray?.map(dog => {
                 return {
@@ -24,16 +23,28 @@ const apiDogs = async () => {
                     origin: dog.origin || null
                 }
             })
-            console.log(apiDogs);
+            
         })
         .catch(err => console.log(err.message))
         return apiDogs;
     };
 
 const dbDogs = async () => {
-    const dbDogs = await Dog.findAll();
-    return dbDogs;    
-};
+    try{
+        const dbDogs = await Dog.findAll({include: {
+            model: Temperament,
+            attributes: ["name"],
+            through: {
+                attributes:[],
+            }
+        }});
+        return dbDogs;    
+    
+    }
+    catch(err){
+        console.log(err)
+    }
+}
 
 const getAllDogs = async () => {
     const api = await apiDogs();

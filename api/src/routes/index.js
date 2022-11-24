@@ -1,11 +1,11 @@
 const { Router } = require('express');
 const dogs = require('./dogs.js');
-const temperaments = require('./temperaments.js');
+const temperament = require('./temperament.js');
 
 const router = Router();
 
 router.use('/dogs', dogs);
-router.use('/temperaments', temperaments);
+router.use('/temperament', temperament);
 
 
 module.exports = router;
