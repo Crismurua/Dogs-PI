@@ -43,6 +43,33 @@ router.get('/:id', async (req, res) => {
     catch(err) {
         res.status(404).send('Dog not Found!')
     }
+});
+
+router.put('/:id', async (req, res) => {
+    const {id} = req.params;
+    const {name, img, breed_group, weight, height, life_span, temperaments, origin} = req.body;
+    try{
+        let currentDog = await getById(id)
+        currentDog?.update(
+            {name, img, breed_group, weight, height, life_span, origin, temperaments}
+        )
+        res.status(200).json(currentDog)
+    }
+    catch(err){
+        res.status(400).send('Something went wrong!')
+    }
+    
+});
+
+router.delete('/:id', async (req, res) => {
+    const {id} = req.params;
+    try{
+        await Dog.destroy({where: {id}})
+        res.status(200).send(`Dog id ${id} successfully destroyed!`)
+    }
+    catch(err) {
+        res.status(400).send('Something went wrong!')
+    }
 })
 
 module.exports = router;
