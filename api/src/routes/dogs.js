@@ -51,8 +51,11 @@ router.put('/:id', async (req, res) => {
     try{
         let currentDog = await getById(id)
         currentDog?.update(
-            {name, img, breed_group, weight, height, life_span, origin, temperaments}
+            {name, img, breed_group, weight, height, life_span, origin}
         )
+        const arrayPromise = await currentDog.upsert(temperaments)
+        await Promise.all(arrayPromise)
+        console.log(currentDog)
         res.status(200).json(currentDog)
     }
     catch(err){

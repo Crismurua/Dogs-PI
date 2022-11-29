@@ -82,7 +82,7 @@ const getByName = async (name) => {
 
 const getById = async (id) => {
     try{
-        if(id.length < 3){
+        if(id.length <= 3){
             const api = await apiDogs();
             const found = api.filter(d => d.id === parseInt(id))
             console.log(found)
