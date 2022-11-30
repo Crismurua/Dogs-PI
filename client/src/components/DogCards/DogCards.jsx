@@ -13,7 +13,7 @@ import { getDogs } from "../../Redux/action/index";
     }, [dispatch]);
 
     return (
-        <div>
+        <div className="cards">
             {
                 dogs?.map(d => {
                     return (
@@ -23,6 +23,7 @@ import { getDogs } from "../../Redux/action/index";
                                 name={d.name}
                                 img={d.img}
                                 weight={d.weight}
+                                temperament={d.temperament}
                                 temperaments={d.temperaments}
                             />
                         </Link>

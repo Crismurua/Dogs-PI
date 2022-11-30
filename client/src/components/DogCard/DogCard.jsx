@@ -1,4 +1,5 @@
 import React from "react";
+import './DogCard.css';
 
 const DogCard = (props) => {
     return (
@@ -7,8 +8,9 @@ const DogCard = (props) => {
             <img key={props.id} src={props.img} className="img" alt={props.name} />
             <h4 className="name">{props.name}</h4>
             <h5>{props.weight} Kg</h5>
+            <span>{props.temperament}</span>
             <div className="temperaments">
-                {Array.isArray(props.temperaments)  ? props.temperaments?.map(t => {return <span className="temps">{t.name}</span>}) : () => <span>{props.temperaments}</span>}
+                {props.temperaments?.map(t => {return <span className="temps">{t.name}</span>})}
             </div>
         </div>
     )

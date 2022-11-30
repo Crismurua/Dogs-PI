@@ -1,0 +1,49 @@
+.dogcard {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 25vh 25vh 5vh 10vh;
+    padding: 3px;
+    box-shadow: 10px 11px 31px -11px rgba(0,0,0,0.43);
+    opacity: 0.8;
+    transition-property: translate;
+    transition-duration: 1s;
+    border: 3px solid rgba(73, 72, 72, 0.863);
+    border-radius: 2%;
+                         
+}
+
+.dogcard:hover {
+    translate: 5px -10px;
+    
+}
+
+.img {
+    max-height: 40vh;
+    max-width: auto;
+    grid-column: 2;
+    grid-row: 1/2;
+}
+
+.name {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 30px;
+    color: rgb(107, 107, 107);
+    grid-column: 2/3;
+    grid-row: 3;
+    margin-left: 30px;
+}
+
+.temperaments {
+    display: flex;
+    flex-direction: column;
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.id {
+    font-size: 30px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;;
+    color: rgb(107, 107, 107);
+    grid-column: end;
+    
+}
