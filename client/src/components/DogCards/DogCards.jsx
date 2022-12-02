@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import DogCard from "../DogCard/DogCard";
 import { Link } from "react-router-dom";
 import { getDogs } from "../../Redux/action/index";
+import './DogCards.css';
 
  function DogCards(){
     const dispatch = useDispatch();

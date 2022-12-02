@@ -1,4 +1,4 @@
-import {GET_DOGS, GET_DOG_DETAIL, GET_TEMPERAMENTS, CREATE_DOG} from './action-types';
+import {GET_DOGS, GET_DOG_DETAIL, GET_TEMPERAMENTS, CREATE_DOG, GET_DOG_NAME} from './action-types';
 
 export const getDogs = () => {
     return async function(dispatch){
@@ -55,3 +55,16 @@ export const getTemperaments = () => {
         })
     }
 };
+
+export const getName = (name) => {
+    return async function(dispatch) {
+        return await fetch(`http://localhost:3001/dogs/?name=${name}`)
+        .then(r => r.json())
+        .then(response => {
+            dispatch({
+                type: GET_DOG_NAME,
+                payload: response
+            })
+        })
+    }
+}

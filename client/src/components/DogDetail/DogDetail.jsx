@@ -1,12 +1,14 @@
 import React from "react";
-import {useParams} from "react-router-dom";
+import {useHistory, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import { getDetail } from "../../Redux/action";
+import {BsFillArrowLeftCircleFill} from 'react-icons/bs';
 
 const DogDetail = (props) => {
     const params = useParams(props);
     const dispatch = useDispatch();
-    const detail = useSelector(state => state.dogDetail)
+    const detail = useSelector(state => state.dogDetail);
+    const navigate = useHistory();
 
     React.useEffect(() => {
         dispatch(getDetail(params.id))
@@ -14,6 +16,7 @@ const DogDetail = (props) => {
 
     return (
         <div className="main-detail" key={detail.id}>
+            <button onClick={() => navigate.push('/dogs')}><BsFillArrowLeftCircleFill /></button>
             {detail.id <= 264 ? <span className="id">#{detail.id}</span> : <span className="id">#DB</span>}
             <h2 className="name-detail">{detail.name}</h2>
             <h4>{detail.breed_group}</h4>
