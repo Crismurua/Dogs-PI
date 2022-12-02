@@ -1,16 +1,17 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { GiDogHouse } from "react-icons/gi";
 import { BiDownArrow } from "react-icons/bi";
 import { FaDog } from "react-icons/fa";
 import "./Nav.css";
-import { useDispatch } from "react-redux";
-import { getDogs, getName } from "../../Redux/action";
+import { useDispatch, useSelector } from "react-redux";
+import { getDogs, getName, getDetail } from "../../Redux/action";
 
 
 const Nav = () => {
-
+    const dogs = useSelector(state => state.dogs)
     const dispatch = useDispatch();
+    const navigate = useHistory();
     const [input, setInput] = useState('');
 
     const handleInput = (e) => {
@@ -20,6 +21,20 @@ const Nav = () => {
     const handleName = (e) => {
         dispatch(getName(input))
     }
+
+    const findResults = dogs
+    .filter((d) => {
+      
+        return d.name.toLowerCase().includes(input.toLowerCase());
+      
+    })
+    .slice(0, 5);
+
+    function handleClick(id) {
+        navigate.push(`dogs/${id}`);
+        dispatch(getDetail(id));
+        setInput("");
+      }
 
     return (
         <div className="nav-container">
@@ -38,8 +53,26 @@ const Nav = () => {
                     <input className="bar" value={input} onChange={handleInput} type="text" placeholder="Search Name..."/>
                     <input className="search" type="submit" value="Go!" />
                 </form>
-                <button><BiDownArrow /></button>
+                <div >
+                      <div >
+                        {input &&
+                          findResults.map((d) => {
+                            return (
+                              <div
+                                onClick={() => {
+                                  handleClick(d.id);
+                                }}
+                                
+                              >
+                                <img  src={d.image} alt="" />
+                                <p>{d.name}</p>
+                              </div>
+                            );
+                          })}
+                      </div>
+                    </div>
                 </div>
+                <button><BiDownArrow /></button>
             <Link to='/create'>NEW DOG! <FaDog /></Link>
         </div>
     )
