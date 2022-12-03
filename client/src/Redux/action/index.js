@@ -45,7 +45,7 @@ export const createDog = (payload) => {
 
 export const getTemperaments = () => {
     return async function(dispatch){
-        return await fetch('http://localhost:3001/temperaments')
+        return await fetch('http://localhost:3001/temperament')
         .then(r => r.json())
         .then(response => {
             dispatch({
