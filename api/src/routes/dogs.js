@@ -1,12 +1,28 @@
 const { Router } = require('express');
 const { Dog, Temperament } = require('../db');
 const {apiDogs, dbDogs, getAllDogs, getByName, getById} = require('../controllers/controllers');
+const multer = require('multer');
+const path = require('path');
 
 const router = Router();
 
-router.post('/', async (req, res) => {
-    const {name, img, breed_group, weight, height, life_span, temperaments, origin} = req.body;
-    console.log(req.body)
+const diskstorage = multer.diskStorage({
+    destination: path.join(__dirname, '../../images'),
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + file.originalname)
+    }
+})
+
+const fileUpload = multer({
+    storage: diskstorage
+}).single('image')
+
+router.post('/', fileUpload, async (req, res) => {
+    const {name, breed_group, weight, height, life_span, temperaments, origin} = req.body;
+    const img = req.file
+    console.log(req.file)
+
+
     if(!name || !weight || !height || !life_span || !temperaments) return res.status(404).send('Data missing');
     try {
         const newDog = await Dog.create({name, img, breed_group, weight, height, life_span, origin});
