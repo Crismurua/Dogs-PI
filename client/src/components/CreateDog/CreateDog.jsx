@@ -10,27 +10,42 @@ import {Checkbox} from "@material-ui/core";
 import {FormLabel} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
+        main: {
+                height:'100vh',
+                width: '100vw',
+            display: 'flex',
+            flexDirection: 'row',
+            flexWrap: 'no-wrap' 
+               
+        },
         root: {
           '& .MuiTextField-root': {
             margin: theme.spacing(1),
-            width: '25ch',
+            width: '20vw',
             display: 'flex',
-            flexDirection: 'row', 
+            flexDirection: 'row'
+
           },
         },
+    
         checkbox: {
                 display: 'flex',
-                marginLeft: 0,
-                
-                float:"right",
-                maxWidth: 300,
                 flexDirection: 'row',
-                alignItems: 'center'   
+                justifyContent: 'center',
+                alignContent: 'center',
+                width: '70vw',
+                flexWrap: 'wrap'               
         },
-        btn: {
+        checkItem: {
+            display: 'flex',
+            flexDirection: 'row',    
+        },
+        img: {
+                maxHeight: 300,
+                maxWidth: 400,
+                marginTop: 20,
+                float: 'right'
                 
-                flexDirection: 'row'
-
         }
       }));
 
@@ -40,7 +55,6 @@ const CreateDog = () => {
 
     const initialState = {
         name: "",
-        img: "",
         breed_group: "",
         weight: "",
         height: "",
@@ -51,6 +65,7 @@ const CreateDog = () => {
 
     const dispatch = useDispatch();
     const [input, setInput] = React.useState(initialState);
+    const [file, setFile] = React.useState(null);
     const temperaments = useSelector(state => state.temperaments);
     const navigate = useHistory();
     
@@ -68,17 +83,31 @@ const CreateDog = () => {
 
     const handleOnSubmit = (e) => {
         e.preventDefault();
+        const formdata = new FormData();
+                formdata.append('image', file)
+                fetch('http://localhost:3001', {
+                        method: 'POST',
+                        body: formdata
+                }).then(res => res.text())
+                console.log(file)
         dispatch(createDog(input));
         setInput(initialState);
+        setFile(null)
         alert('Dog succesfully created!')
         navigate.push('/dogs')
     };
 
     const handleChange = (e) => {
         e.preventDefault();
+
         setError(validate({...input, [e.target.name] : e.target.value}))
         setInput({...input, [e.target.name] : e.target.value})
+        
     };
+
+    const handleImage = (e) => {
+        setFile(e.target.files[0])
+    }
 
     const handleTemps = (e) => {
                 
@@ -96,46 +125,51 @@ const CreateDog = () => {
 
 
     return (
-        <div>
-            <button onClick={() => navigate.push('/dogs')}><BsFillArrowLeftCircleFill /></button>
-
-            <form enctype="multipart/form-data" className={classes.root} onSubmit={(e) => handleOnSubmit(e)}>
+        <div className={classes.main}>
+            <Button onClick={() => navigate.push('/dogs')}><BsFillArrowLeftCircleFill /></Button>
+            <form encType="multipart/form-data" className={classes.root} onSubmit={(e) => handleOnSubmit(e)}>
+            <img src={file ? file : '/media/fila-brasilero.jpg'} className={classes.img} alt={input.name} />
                 
-                
-                <TextField 
+                <div className={classes.input}>
+                        <TextField 
                         required id="standard-required" 
                         label="Name"
                         name="name"
                         value={input.name}
                         onChange={handleChange}
                         />
+                </div>
                 
-                <TextField 
+                <div className={classes.input}>
+                        <TextField 
                         label="Image"
                         type="file"
-                        name="img"
-                        value={input.img}
-                        onChange={handleChange}
+                        onChange={handleImage}
                         />
-                
-                <TextField 
+                </div>
+
+                <div className={classes.input}>
+                        <TextField 
                         required id="standard-required" 
                         label="Breed Group"
                         name="breed_group"
                         value={input.breed_group}
                         onChange={handleChange}
                         />
+                </div>
                 
-                
-                <TextField 
+                <div className={classes.input}>
+                        <TextField 
                         required id="standard-required" 
                         label="Origin"
                         name="origin"
                         value={input.origin}
                         onChange={handleChange}
                         />
+                </div>
 
-                <TextField
+                <div className={classes.input}>
+                        <TextField
                         id="filled-number"
                         label="Life Span"
                         type="number"
@@ -148,8 +182,10 @@ const CreateDog = () => {
                         onChange={handleChange}
                         
                         />
-                
-                <TextField
+                </div>
+
+                <div className={classes.input}>
+                        <TextField
                         id="filled-number"
                         label="height"
                         type="number"
@@ -162,8 +198,10 @@ const CreateDog = () => {
                         onChange={handleChange}
                         
                         />
-
-                <TextField
+                </div>
+                                
+                <div className={classes.input}>
+                        <TextField
                         id="filled-number"
                         label="Weight"
                         type="number"
@@ -176,8 +214,12 @@ const CreateDog = () => {
                         onChange={handleChange}
                         
                         />
+
+
+                </div>
                 
                 <br></br>
+                <div className={classes.checkbox}>
                 {
                         temperaments?.map(temp => {
                                 return  (
@@ -190,19 +232,20 @@ const CreateDog = () => {
                                         //       onChange={handleTemps}
                                         //       />  
                                         // </div>
-                                        <div className={classes.checkbox}>
+                                        <div className={classes.checkItem}>
                                         <FormLabel component="legend">{temp.name}</FormLabel>
                                         <Checkbox
                                         value={temp.id}
                                         inputProps={{ 'title': temp.name }}
                                         name="temperaments"
                                         onChange={handleTemps}
+                                        color="default"
                                       />
                                       </div>
                                 )
                         })
                 }
-                
+                </div>
                 { error.name && (<span className="danger">{error.name}</span>)}
                 { error.temperaments && (<span className="danger">{error.types}</span>)}
 
