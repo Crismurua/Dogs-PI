@@ -61,6 +61,25 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+router.get('/filter/:origin', async (req, res) => {
+    const {origin} = req.params;
+    if(!origin) return
+    try{
+        console.log(origin)
+        if(origin === 'database'){
+            const db = await dbDogs();
+            return res.status(200).send(db);
+        }
+        if(origin === 'api'){
+            const api = await apiDogs();
+            return res.status(200).send(api);
+        }
+    }catch(err){
+        res.status(404).send('Not Found')
+    }
+
+})
+
 router.put('/:id', async (req, res) => {
     const {id} = req.params;
     const {name, img, breed_group, weight, height, life_span, temperaments, origin} = req.body;
