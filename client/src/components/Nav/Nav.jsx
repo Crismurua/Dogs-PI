@@ -28,6 +28,8 @@ const useStyles = makeStyles((theme) => ({
     },
     menuButton: {
       marginRight: theme.spacing(2),
+      color: '#eee',
+      
     },
     title: {
       flexGrow: 1,

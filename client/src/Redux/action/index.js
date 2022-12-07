@@ -1,4 +1,4 @@
-import {GET_DOGS, GET_DOG_DETAIL, GET_TEMPERAMENTS, CREATE_DOG, GET_DOG_NAME} from './action-types';
+import {GET_DOGS, GET_DOG_DETAIL, GET_TEMPERAMENTS, CREATE_DOG, GET_DOG_NAME, FILTER_ORIGIN, FILTER_TEMPERAMENT, ORDER_NAME, ORDER_WEIGHT} from './action-types';
 
 export const getDogs = () => {
     return async function(dispatch){
@@ -67,4 +67,38 @@ export const getName = (name) => {
             })
         })
     }
-}
+};
+
+export const filterOrigin = (origin) => {
+    return async function(dispatch) {
+        return await fetch(`http://localhost:3001/dogs/filter/${origin}`)
+        .then(r => r.json())
+        .then(response => {
+            dispatch({
+                type: FILTER_ORIGIN,
+                payload: response
+            })
+        })
+    }
+};
+
+export const filterTemps = (temp) => {
+    return {
+                type: FILTER_TEMPERAMENT,
+                payload: temp
+            }
+};
+
+export const orderName = (order) => {
+    return {
+        type: ORDER_NAME,
+        payload: order
+    }
+};
+
+export const orderWeight = (order) => {
+    return {
+        type: ORDER_WEIGHT,
+        payload: order
+    }
+};

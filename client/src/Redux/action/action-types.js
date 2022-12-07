@@ -3,5 +3,8 @@ export const GET_DOG_DETAIL = 'GET_DOG_DETAIL';
 export const GET_TEMPERAMENTS = 'GET_TEMPERAMENTS';
 export const CREATE_DOG = 'CREATE_DOG';
 export const GET_DOG_NAME = 'GET_DOG_NAME';
-
+export const FILTER_ORIGIN = 'FILTER_ORIGIN';
+export const FILTER_TEMPERAMENT = 'FILTER_TEMPERAMENT';
+export const ORDER_NAME = 'ORDER_NAME';
+export const ORDER_WEIGHT = 'ORDER_WEIGHT';
 

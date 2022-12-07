@@ -41,11 +41,11 @@ const DogCard = (props) => {
                 </Link> 
             <CardContent>
                 <Typography className={classes.typo} variant="body2" color="textSecondary" component="p">
-                    Breed Name : {props.name}
+                    Breed Name : <strong>{props.name}</strong>
                     <br></br>
-                    Weight : {props.weight} Kg
+                    Weight : <strong>{props.weight} Kg</strong>
                     <br></br>
-                    Temps : {props.temperament ? props.temperament : props.temperaments?.map(t => t.name)}
+                    Temps : <strong>{props.temperament ? props.temperament : props.temperaments?.map(t => t.name)}</strong>
                 </Typography>
             </CardContent>
             </CardActionArea>
