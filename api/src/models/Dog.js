@@ -17,6 +17,8 @@ module.exports = (sequelize) => {
     },
     img: {
       type: DataTypes.STRING,
+      defaultValue:
+                    'https://www.publicdomainpictures.net/pictures/260000/velka/dog-face-cartoon-illustration.jpg',
     },
     height: {
       type: DataTypes.STRING,

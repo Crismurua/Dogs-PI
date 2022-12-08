@@ -1,26 +1,15 @@
 const { Router } = require('express');
 const { Dog, Temperament } = require('../db');
 const {apiDogs, dbDogs, getAllDogs, getByName, getById} = require('../controllers/controllers');
-const multer = require('multer');
-const path = require('path');
+
 
 const router = Router();
 
-const diskstorage = multer.diskStorage({
-    destination: path.join(__dirname, '../../images'),
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + file.originalname)
-    }
-})
 
-const fileUpload = multer({
-    storage: diskstorage
-}).single('image')
 
-router.post('/', fileUpload, async (req, res) => {
-    const {name, breed_group, weight, height, life_span, temperaments, origin} = req.body;
-    const img = req.file
-    console.log(req.file)
+
+router.post('/', async (req, res) => {
+    const {name, img, breed_group, weight, height, life_span, temperaments, origin} = req.body;
 
 
     if(!name || !weight || !height || !life_span || !temperaments) return res.status(404).send('Data missing');
@@ -74,6 +63,10 @@ router.get('/filter/:origin', async (req, res) => {
             const api = await apiDogs();
             return res.status(200).send(api);
         }
+        else if(origin === 'all'){
+            const all = await getAllDogs();
+            return res.status(200).send(all);
+        }
     }catch(err){
         res.status(404).send('Not Found')
     }
@@ -84,17 +77,18 @@ router.put('/:id', async (req, res) => {
     const {id} = req.params;
     const {name, img, breed_group, weight, height, life_span, temperaments, origin} = req.body;
     try{
-        let currentDog = await getById(id)
+        let currentDog = await Dog.findByPk(id, {include: Temperament});
         currentDog?.update(
             {name, img, breed_group, weight, height, life_span, origin}
-        )
-        const arrayPromise = await currentDog.upsert(temperaments)
-        await Promise.all(arrayPromise)
-        console.log(currentDog)
-        res.status(200).json(currentDog)
+        );
+        
+        await currentDog?.setTemperaments(temperaments);
+        
+        console.log(currentDog);
+        res.status(200).json(currentDog);
     }
     catch(err){
-        res.status(400).send('Something went wrong!')
+        res.status(400).send(err)
     }
     
 });
