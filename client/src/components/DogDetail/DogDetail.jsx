@@ -2,13 +2,15 @@ import React from "react";
 import {useHistory, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import { getDetail } from "../../Redux/action";
-import {BsFillArrowLeftCircleFill} from 'react-icons/bs';
+import {BsFillArrowLeftCircleFill, BsFillTrashFill} from 'react-icons/bs';
+import { AiFillEdit } from 'react-icons/ai';
 import { Button, styled } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
+
 
 
 
@@ -50,6 +52,14 @@ const DogDetail = (props) => {
         dispatch(getDetail(params.id))
     }, [params.id, dispatch]);
 
+    const handleDelete = () => {
+
+    }
+
+    const handleEdit = () => {
+
+    }
+
     const classes = useStyles(); 
 
     return (
@@ -77,7 +87,7 @@ const DogDetail = (props) => {
             <Box sx={{ flexGrow: 1 }}>
                 <Grid container spacing={2}>
                 <Button className={classes.back} onClick={() => navigate.push('/dogs')}><BsFillArrowLeftCircleFill /></Button>
-            
+                
                 <Grid item xs={8} key={detail.id}>
                     <Item className={classes.title}>{detail.name}</Item>
                 </Grid>
@@ -90,12 +100,14 @@ const DogDetail = (props) => {
                 </Grid>
                 <Grid item xs={8}>
                     <img className={classes.img} src={detail.img} alt={detail.name} />
+                    <br></br>
+                    <Button className={classes.btn} onClick={handleDelete} disabled={detail.id?.length > 3 ? false : true}><BsFillTrashFill /></Button>
+                    <Button className={classes.btn} onClick={handleEdit} disabled={detail.id?.length > 3 ? false : true}><AiFillEdit /></Button>
                 </Grid>
                 <Grid item xs={8}>
-                    {detail.temperaments?.map(t => {
-                            return <Item>{t.name}</Item>
-                    })}
-                    <Item>{detail.temperament}</Item>
+                    {detail.temperaments ? detail.temperaments?.map(t => <Item>{t.name}</Item>) 
+                    : <Item>{detail.temperament}</Item>}
+                    
 
                 </Grid>
         

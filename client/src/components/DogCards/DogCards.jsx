@@ -45,6 +45,7 @@ const useStyles = makeStyles((theme) => ({
     React.useEffect(() => {
         dispatch(getDogs())
         dispatch(getTemperaments())
+        setPage(1)
     }, [dispatch, page]);
 
     
@@ -98,13 +99,13 @@ const useStyles = makeStyles((theme) => ({
                 <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={'origin'}
+                value={'all'}
                 label="Origin"
                 onChange={handleOrigin}
                 >
                 <MenuItem value={'database'}>Data Base</MenuItem>
                 <MenuItem value={'api'}>Api</MenuItem>
-                <MenuItem value={''}>All</MenuItem>
+                <MenuItem value={'all'}>All</MenuItem>
                 </Select>
             </FormControl>
             <FormControl>
@@ -116,7 +117,7 @@ const useStyles = makeStyles((theme) => ({
                 label="Temperament"
                 onChange={filterTemp}
                 >
-                    <MenuItem value={''}>All</MenuItem>
+                    <MenuItem value={'all'}>All</MenuItem>
                     {temps?.map(t => {
                         return (
 
@@ -131,7 +132,7 @@ const useStyles = makeStyles((theme) => ({
                 <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={'alphabetic'}
+                value={''}
                 label="Alphabetic"
                 onChange={handleName}
                 >

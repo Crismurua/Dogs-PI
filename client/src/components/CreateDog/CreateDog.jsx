@@ -1,13 +1,18 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createDog, getTemperaments } from "../../Redux/action";
+import { createDog } from "../../Redux/action";
 import { useHistory } from "react-router-dom";
-import {BsFillArrowLeftCircleFill} from 'react-icons/bs';
+import {BsFillArrowLeftCircleFill, BsFillTrashFill} from 'react-icons/bs';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { Button } from "@material-ui/core";
-import {Checkbox} from "@material-ui/core";
-import {FormLabel} from "@material-ui/core";
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+
+
+
 
 const useStyles = makeStyles((theme) => ({
         main: {
@@ -28,24 +33,30 @@ const useStyles = makeStyles((theme) => ({
           },
         },
     
-        checkbox: {
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignContent: 'center',
-                width: '70vw',
-                flexWrap: 'wrap'               
-        },
-        checkItem: {
-            display: 'flex',
-            flexDirection: 'row',    
-        },
+ 
         img: {
                 maxHeight: 300,
                 maxWidth: 400,
                 marginTop: 20,
                 float: 'right'
                 
+        },
+        btn: {
+                background: '#4070ff',
+                maxHeight:60,
+                marginLeft: 350,
+                fontSize: 60,
+                color: '#fff',
+                
+        },
+        back: {
+                maxHeight:60,
+                marginLeft: -50,
+                fontSize: 60,
+                color: '#888'
+        },
+        temps: {
+                position: 'relative'
         }
       }));
 
@@ -65,16 +76,10 @@ const CreateDog = () => {
 
     const dispatch = useDispatch();
     const [input, setInput] = React.useState(initialState);
-    const [file, setFile] = React.useState(null);
     const temperaments = useSelector(state => state.temperaments);
     const navigate = useHistory();
     
     const [error, setError] = React.useState({});
-
-     React.useEffect(() => { 
-        dispatch(getTemperaments())    
-     }, [dispatch]);
-
 
     
     React.useEffect(() => {
@@ -83,16 +88,8 @@ const CreateDog = () => {
 
     const handleOnSubmit = (e) => {
         e.preventDefault();
-        const formdata = new FormData();
-                formdata.append('image', file)
-                fetch('http://localhost:3001', {
-                        method: 'POST',
-                        body: formdata
-                }).then(res => res.text())
-                console.log(file)
         dispatch(createDog(input));
         setInput(initialState);
-        setFile(null)
         alert('Dog succesfully created!')
         navigate.push('/dogs')
     };
@@ -105,31 +102,39 @@ const CreateDog = () => {
         
     };
 
-    const handleImage = (e) => {
-        setFile(e.target.files[0])
+    const verifyImage = (url) => {
+        new Promise((resolve) => {
+            const image = new Image();
+            image.src = url;
+            image.onload = () => resolve(setInput({ ...input, img: url }));
+            image.onerror = () => resolve(delete input.img);
+        });
     }
 
-    const handleTemps = (e) => {
-                
-        if(!input.temperaments.includes(e.target.value)){
-                setInput({...input, temperaments: [...input.temperaments, e.target.value]})
-                
-        }
-        else{
-                input.temperaments = input.temperaments.filter(temp => temp !== e.target.value)
-                setInput({...input, temperaments: input.temperaments})
-        }
-       
-        console.warn(e.target.value)
-}
+    function handleSelectTemperament(option) {
+        setInput({
+            ...input,
+            temperaments: input.temperaments.includes(option)
+                ? input.temperaments
+                : [...input.temperaments, option],
+        });
+        console.log(input)
+    }
+    function handleDeleteTemperament(id) {
+        setInput({
+            ...input,
+            temperaments: input.temperaments.filter((t) => t.id !== parseInt(id)),
+        });
+    }
 
 
     return (
         <div className={classes.main}>
-            <Button onClick={() => navigate.push('/dogs')}><BsFillArrowLeftCircleFill /></Button>
+            <Button className={classes.back} onClick={() => navigate.push('/dogs')}><BsFillArrowLeftCircleFill /></Button>
             <form encType="multipart/form-data" className={classes.root} onSubmit={(e) => handleOnSubmit(e)}>
-            <img src={file ? file : '/media/fila-brasilero.jpg'} className={classes.img} alt={input.name} />
-                
+            <img src={input.img ? input.img : '/media/fila-brasilero.jpg'} className={classes.img} alt={input.name} />
+            
+
                 <div className={classes.input}>
                         <TextField 
                         required id="standard-required" 
@@ -143,8 +148,12 @@ const CreateDog = () => {
                 <div className={classes.input}>
                         <TextField 
                         label="Image"
-                        type="file"
-                        onChange={handleImage}
+                        placeholder="https://url.com/image.jpg"
+                        required
+                        onChange={(e) => {
+                            verifyImage(e.target.value);
+                        }}
+                        type="text"
                         />
                 </div>
 
@@ -219,35 +228,48 @@ const CreateDog = () => {
                 </div>
                 
                 <br></br>
-                <div className={classes.checkbox}>
-                {
-                        temperaments?.map(temp => {
-                                return  (
-                                        // <div className="temps-container">
-                                        // <label className="form-temps">{temp.name}</label>
-                                        // <input className="type-box" 
-                                        //       type="checkbox"
-                                        //       name="temperaments"
-                                        //       value={temp.id}
-                                        //       onChange={handleTemps}
-                                        //       />  
-                                        // </div>
-                                        <div className={classes.checkItem}>
-                                        <FormLabel component="legend">{temp.name}</FormLabel>
-                                        <Checkbox
-                                        value={temp.id}
-                                        inputProps={{ 'title': temp.name }}
-                                        name="temperaments"
-                                        onChange={handleTemps}
-                                        color="default"
-                                      />
-                                      </div>
-                                )
-                        })
-                }
-                </div>
+                
+                                        <FormControl>
+                                                <InputLabel id="demo-simple-select-label">Temperament</InputLabel>
+                                                <Select
+                                                labelId="demo-simple-select-label"
+                                                id="demo-simple-select"
+                                                value={input.temperaments}
+                                                label="Temperament"
+                                                onChange={(e) => {
+                                                        handleSelectTemperament(e.target.value);
+                                                        
+                                                    }}
+                                                >
+                                                    
+                                                    {temperaments?.map(t => {
+                                                        return (
+
+                                                        <MenuItem value={t.id}>{t.name}</MenuItem>
+                            
+                                                         )
+                                                        })}
+                                                </Select>
+                                        </FormControl>
+
+                <ul className={classes.temps}>
+                {input.temperaments && temperaments.map(temp => {
+                        return (<li key={temp.id}>
+                                <button onClick={() => {
+                                handleDeleteTemperament(temp.id)
+                            }}>
+                            <BsFillTrashFill />
+                            </button>
+                                {temp.name}
+                      </li>)
+                })}
+                </ul>
+              
+                                      
+                                   
+               
                 { error.name && (<span className="danger">{error.name}</span>)}
-                { error.temperaments && (<span className="danger">{error.types}</span>)}
+                { error.temperaments && (<span className="danger">{error.temperaments}</span>)}
 
                 <Button type="submit" className={classes.btn} disabled={!input.name || !input.height || !input.weight || !input.temperaments.length ? true : false}>Create Dog!</Button>        
             </form>
