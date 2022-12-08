@@ -13,7 +13,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   darkmode: {
-          position:"absolute",
+          float: 'right',
           margin:10,
          
   },
@@ -36,7 +36,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <IconButton className={classes.darkmode} edge='start' color="inherit" onClick={()=> setDark(!dark)}>
+      <IconButton className={classes.darkmode} edge='end' color="inherit" onClick={()=> setDark(!dark)}>
         {!dark ? <RiMoonLine /> : <RiSunLine />}
       </IconButton>
         <Container>
