@@ -132,11 +132,11 @@ const useStyles = makeStyles((theme) => ({
                 <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={''}
+                value={'alphabetic'}
                 label="Alphabetic"
                 onChange={handleName}
                 >
-                    <MenuItem value={''}>All</MenuItem>
+                
                     <MenuItem value={'a-z'}>A-Z</MenuItem>
                     <MenuItem value={'z-a'}>Z-A</MenuItem>
                     
@@ -151,7 +151,7 @@ const useStyles = makeStyles((theme) => ({
                 label="Weight"
                 onChange={handleWeight}
                 >
-                    <MenuItem value={''}>All</MenuItem>
+                    
                     <MenuItem value={'heavy'}>Heavy</MenuItem>
                     <MenuItem value={'light'}>Light</MenuItem>
                 </Select>

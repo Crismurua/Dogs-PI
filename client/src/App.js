@@ -6,6 +6,7 @@ import DogDetail from "./components/DogDetail/DogDetail";
 import Nav from "./components/Nav/Nav";
 import Container from "@material-ui/core/Container";
 import Landing from "./components/Landing/Landing";
+import EditDog from "./components/EditDog/EditDog";
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Route exact path='/dogs' component={() => <DogCards />}/>
         <Route exact path='/dogs/:id' component={() => <DogDetail />}/>
         <Route exact path='/create' component={() => <CreateDog />}/>
+        <Route exact path='/edit/:id' component={() => <EditDog />}/>
       </Switch>
     </Container>
   );

@@ -101,7 +101,7 @@ const Nav = () => {
     const findResults = dogs
     .filter((d) => {
       
-        return d.name.toLowerCase().includes(input.toLowerCase());
+        return d.name?.toLowerCase().includes(input.toLowerCase());
       
     })
     .slice(0, 5);
