@@ -14,7 +14,7 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme) => ({
   darkmode: {
           position:"absolute",
-          margin:15,
+          margin:10,
          
   },
 }));
