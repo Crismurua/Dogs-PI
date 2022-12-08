@@ -2,7 +2,7 @@ import {GET_DOGS, GET_DOG_DETAIL, GET_TEMPERAMENTS, CREATE_DOG, GET_DOG_NAME, FI
 
 export const getDogs = () => {
     return async function(dispatch){
-        return await fetch('http://localhost:3001/dogs')
+        return await fetch('https://dogs-pi-production-c755.up.railway.app/dogs')
         .then(r => r.json())
         .then(response => {
             dispatch({
@@ -15,7 +15,7 @@ export const getDogs = () => {
 
 export const getDetail = (id) => {
     return async function(dispatch){
-        return await fetch(`http://localhost:3001/dogs/${id}`)
+        return await fetch(`https://dogs-pi-production-c755.up.railway.app/dogs/${id}`)
         .then(r => r.json())
         .then(response => {
             dispatch({
@@ -28,7 +28,7 @@ export const getDetail = (id) => {
 
 export const createDog = (payload) => {
     return async function(dispatch){
-        return await fetch('http://localhost:3001/dogs', {
+        return await fetch('https://dogs-pi-production-c755.up.railway.app/dogs', {
             method: "POST",
             mode: "cors",
             body: JSON.stringify(payload),
@@ -45,7 +45,7 @@ export const createDog = (payload) => {
 
 export const getTemperaments = () => {
     return async function(dispatch){
-        return await fetch('http://localhost:3001/temperament')
+        return await fetch('https://dogs-pi-production-c755.up.railway.app/temperament')
         .then(r => r.json())
         .then(response => {
             dispatch({
@@ -58,7 +58,7 @@ export const getTemperaments = () => {
 
 export const getName = (name) => {
     return async function(dispatch) {
-        return await fetch(`http://localhost:3001/dogs/?name=${name}`)
+        return await fetch(`https://dogs-pi-production-c755.up.railway.app/dogs/?name=${name}`)
         .then(r => r.json())
         .then(response => {
             dispatch({
@@ -71,7 +71,7 @@ export const getName = (name) => {
 
 export const filterOrigin = (origin) => {
     return async function(dispatch) {
-        return await fetch(`http://localhost:3001/dogs/filter/${origin}`)
+        return await fetch(`https://dogs-pi-production-c755.up.railway.app/dogs/filter/${origin}`)
         .then(r => r.json())
         .then(response => {
             dispatch({

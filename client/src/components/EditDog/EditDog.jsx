@@ -110,7 +110,7 @@ const EditDog = () => {
 
     const handleOnSubmit = (e) => {
         e.preventDefault();
-        fetch(`http://localhost:3001/dogs/${detail.id}`,{
+        fetch(`https://dogs-pi-production-c755.up.railway.app/dogs/${detail.id}`,{
             method: 'PUT',
             headers: {
                 'Content-type': 'application/json; charset=UTF-8' // Indicates the content 

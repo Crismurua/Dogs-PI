@@ -103,7 +103,7 @@ const DogDetail = (props) => {
                                 }}
                               action={
                                 <Button color="inherit" size="small" onClick={()=> {
-                                    fetch(`http://localhost:3001/dogs/${detail.id}`, {
+                                    fetch(`https://dogs-pi-production-c755.up.railway.app/dogs/${detail.id}`, {
                                         method: 'DELETE',
                                     }).then(r => {
                                         setAlert(false);
